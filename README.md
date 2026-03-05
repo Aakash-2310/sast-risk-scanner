@@ -1,128 +1,19 @@
 # SAST Risk Scanner
 
-This project implements a CI/CD integrated Static Application Security Testing (SAST) scanner with risk-based merge control.  
-The scanner analyzes code changes in pull requests and automatically blocks merges if critical vulnerabilities are detected.
+This project implements a CI/CD integrated Static Application Security Testing (SAST) scanner with risk-based merge control.
 
-------------------------------------------------------------
+## Features
+- Diff based scanning
+- Runs on Pull Requests
+- Risk score calculation
+- Blocks merge for high severity vulnerabilities
 
-Project Overview
-
-The objective of this project is to integrate a lightweight SAST scanner into a CI/CD pipeline so that potential security issues can be detected before code is merged into the main branch.
-
-Instead of scanning the entire repository every time, the scanner focuses only on files that were modified in a Pull Request. This makes the scanning process faster and more efficient.
-
-------------------------------------------------------------
-
-Key Features
-
-• Diff-based scanning  
-  Only scans the files that were modified in the Pull Request.
-
-• CI/CD integration  
-  Automatically runs during the pipeline using GitHub Actions or GitLab CI.
-
-• Risk-based merge control  
-  A risk score is calculated to determine whether the merge should be allowed or blocked.
-
-• Severity-based handling
-  - High severity  → CI pipeline fails → Merge blocked
-  - Medium severity → Warning message → CI pipeline passes
-  - Low severity → Logged only → CI pipeline passes
-
-• Automated security report  
-  Generates a JSON report containing the detected vulnerabilities and calculated risk score.
-
-------------------------------------------------------------
-
-Risk Calculation Model
-
-The risk score is calculated using the following formula:
-
-Risk Score = (severity_weight × count) + (exploitability × exposure)
-
-Where:
-
-• severity_weight – importance of the vulnerability level  
-• count – number of findings  
-• exploitability – how easily the vulnerability can be exploited  
-• exposure – potential impact of the vulnerability
-
-------------------------------------------------------------
-
-Running the Scanner Locally
-
-You can run the scanner locally to test the project.
-
-Command:
-
+## Run locally
 python sast_scan.py --report reports/local_report.json --verbose
 
-The generated report will be saved in:
-
-reports/local_report.json
-
-------------------------------------------------------------
-
-Installing the Git Pre-Commit Hook
-
-To automatically run the scanner before committing code, install the git hook:
-
+## Install git hook
 bash scripts/install_hook.sh
 
-This helps detect vulnerabilities before the code is committed to the repository.
-
-------------------------------------------------------------
-
-Running the Backend API (Optional)
-
-This project also includes a small backend service to trigger scans through an API.
-
-Install dependencies:
-
+## Run backend (optional)
 pip install -r requirements.txt
-
-Start the backend server:
-
 uvicorn backend.app:app --reload --port 8000
-
-Open the API documentation in your browser:
-
-http://127.0.0.1:8000/docs
-
-------------------------------------------------------------
-
-CI/CD Integration
-
-The scanner runs automatically during the CI/CD pipeline.
-
-GitHub Actions Workflow
-
-When a Pull Request is created:
-
-1. The workflow is triggered automatically.
-2. The SAST scanner runs on the changed files.
-3. A security report is generated.
-4. If a High severity vulnerability is detected, the pipeline fails and the merge is blocked.
-
-------------------------------------------------------------
-
-Project Structure
-
-sast-risk-scanner
-
-backend/            → Backend API for triggering scans  
-config/             → Risk scoring configuration  
-reports/            → Generated scan reports  
-scripts/            → Git hooks for pre-commit scanning  
-src/sastrisk/       → Core SAST scanning logic  
-.github/workflows/  → CI/CD pipeline configuration  
-
-sast_scan.py        → CLI entry point  
-requirements.txt    → Project dependencies  
-README.md           → Project documentation
-
-------------------------------------------------------------
-
-Author
-
-This project was developed as part of an internship project focused on integrating security checks into CI/CD pipelines.
