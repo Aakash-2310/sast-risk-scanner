@@ -1,0 +1,22 @@
+stages:
+  - security
+
+sast_scan:
+  stage: security
+  image: python:3.11
+
+  before_script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - mkdir -p reports
+
+  script:
+    - python sast_scan.py --report reports/gitlab_mr_report.json --verbose
+
+  artifacts:
+    when: always
+    paths:
+      - reports/gitlab_mr_report.json
+
+  rules:
+    - if: $CI_MERGE_REQUEST_ID

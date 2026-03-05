@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+echo "[hook] Running SAST scan on changed files..."
+
+python sast_scan.py --report .git/sast_report.json --verbose
+code=$?
+
+if [ $code -eq 2 ]; then
+  echo "[hook]  BLOCK: High severity findings detected. Commit blocked."
+  exit 1
+fi
+
+echo "[hook]  Commit allowed."
+exit 0

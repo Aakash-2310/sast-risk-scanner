@@ -1,0 +1,13 @@
+{
+  "severity_weight": {
+    "HIGH": 10,
+    "MEDIUM": 5,
+    "LOW": 2
+  },
+  "default_exploitability": {
+    "HIGH": 8,
+    "MEDIUM": 5,
+    "LOW": 2
+  },
+  "default_exposure": 6
+}
